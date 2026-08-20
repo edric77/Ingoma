@@ -2,7 +2,7 @@ import { Link, useParams, useNavigate } from 'react-router-dom'
 import { getLesson } from '../lib/catalog'
 import { completeLesson, getProgress } from '../lib/progress'
 import { useState } from 'react'
-import { ArrowRight, Check } from 'lucide-react'
+import { ArrowRight, Check, Gamepad2 } from 'lucide-react'
 
 export default function LessonPage() {
   const { track: trackSlug, lesson: lessonSlug } = useParams<{ track: string; lesson: string }>()
@@ -17,6 +17,8 @@ export default function LessonPage() {
     return <p className="text-ink-muted">Leçon introuvable.</p>
   }
 
+  const activityTypes = [...new Set(data.activities.map((a) => a.type))]
+
   function markDone() {
     completeLesson(data!.id)
     setDone(true)
@@ -26,12 +28,12 @@ export default function LessonPage() {
     <div className="space-y-6">
       <div>
         <p className="text-xs text-ink-muted uppercase tracking-wide">
-          {trackSlug?.replace('-', ' ')} · {data.durationMin} min
+          {trackSlug?.replace(/-/g, ' ')} · {data.durationMin} min
         </p>
         <h1 className="font-serif text-2xl font-semibold text-forest mt-1">{data.title}</h1>
       </div>
 
-      <div className="prose-sm space-y-4 text-ink leading-relaxed">
+      <div className="space-y-4 text-ink leading-relaxed text-sm">
         {data.content.map((p, i) => (
           <p key={i}>{p}</p>
         ))}
@@ -49,13 +51,35 @@ export default function LessonPage() {
         </ul>
       </div>
 
+      {activityTypes.length > 0 && (
+        <div className="flex flex-wrap gap-1.5">
+          {activityTypes.map((t) => (
+            <span
+              key={t}
+              className="inline-flex items-center gap-1 rounded-full bg-forest/10 text-forest text-xs px-2.5 py-1"
+            >
+              <Gamepad2 className="size-3" />
+              {t === 'mcq' && 'QCM'}
+              {t === 'truefalse' && 'Vrai/Faux'}
+              {t === 'flashcard' && 'Flashcards'}
+              {t === 'fillblank' && 'Texte à trous'}
+              {t === 'order' && 'Ordonnancement'}
+              {t === 'match' && 'Association'}
+              {t === 'dragdrop' && 'Glisser-déposer'}
+              {t === 'decision' && 'Décision'}
+            </span>
+          ))}
+        </div>
+      )}
+
       <p className="text-xs text-ink-muted leading-relaxed">
-        Avertissement : contenu pédagogique uniquement. Non constitutif d'avis juridique officiel.
+        Contenu pédagogique uniquement — non constitutif d&apos;avis juridique officiel.
       </p>
 
       <div className="flex flex-col gap-2">
         {!done ? (
           <button
+            type="button"
             onClick={markDone}
             className="w-full rounded-xl border border-forest text-forest font-medium py-3 flex items-center justify-center gap-2 hover:bg-forest/5"
           >
@@ -66,10 +90,11 @@ export default function LessonPage() {
           <p className="text-center text-sm text-forest font-medium">Leçon terminée ✓</p>
         )}
         <button
+          type="button"
           onClick={() => navigate(`/quiz/${trackSlug}/${lessonSlug}`)}
           className="w-full rounded-xl bg-forest text-white font-medium py-3 flex items-center justify-center gap-2"
         >
-          Passer le quiz
+          Lancer les défis ({data.activities.length})
           <ArrowRight className="size-4" />
         </button>
         <Link
