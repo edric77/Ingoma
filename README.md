@@ -8,44 +8,39 @@ Logo : tambour sacré (karyenda) stylisé aux couleurs du drapeau national (roug
 
 Former les agents de l'État par de courtes leçons, des quiz et des cas pratiques, avec progression mesurable et reconnaissance de la régularité.
 
-## Parcours
+## Fonctionnalités (v0.1)
 
-| Parcours | Contenu |
-| --- | --- |
-| Commande publique | Cadre juridique, procédures, acteurs (ARMP, DNCMP, PRMP) |
-| Comptabilité publique | Ordonnateur / comptable, exécution, contrôles, SIGEFI |
+- Accueil + parcours **Commande publique** (4 leçons + quiz + cas) et amorce **Comptabilité publique**
+- Quiz avec feedback immédiat (seuil 70 %)
+- Points, streak, badges (stockage local)
+- Connexion téléphone +257 (OTP simulé)
+- Classement (démo), glossaire, certificat imprimable
+- UI institutionnelle (fond papier crème, vert forêt, Fraunces)
 
-## Fonctionnalités prévues
-
-- Leçons courtes + quiz (seuil 70 %)
-- Cas pratiques
-- **Points** et **classements** (national, institution, hebdomadaire)
-- **Séries de régularité** (streaks) + badges
-- Inscription par **numéro burundais (+257)** + OTP SMS
-- Certificats de parcours
-- Tuteur IA (contexte droit burundais)
-
-Voir le détail dans [`docs/PRODUCT.md`](docs/PRODUCT.md).
-
-## Stack
-
-- Vite + React + TypeScript
-- Tailwind CSS (à venir)
-- Auth téléphone / OTP
-- Base Postgres (Neon / équivalent)
-- Déploiement : Vercel
-
-## Démarrage local
+## Démarrage
 
 ```bash
 npm install
 npm run dev
 ```
 
-## Statut
+Ouvrir http://localhost:5173
 
-Code starter Vite + React poussé. Le développement de l'application (parcours, quiz, points, auth) se poursuit ici.
+**OTP démo** : n'importe quel code à 6 chiffres (ex. `123456`).
+
+## Stack
+
+- Vite 5 + React 19 + TypeScript
+- React Router 7
+- Tailwind CSS v4
+- Lucide icons
+- Progression en localStorage (prêt pour sync serveur)
+
+## Avertissement
+
+Contenu pédagogique uniquement. **Non constitutif d'avis juridique officiel.**  
+Référez-vous aux textes en vigueur (ARMP, DNCMP, Ministère des Finances).
 
 ## Licence
 
-Usage institutionnel — contenu pédagogique, non constitutif d'avis juridique officiel.
+Usage institutionnel.
