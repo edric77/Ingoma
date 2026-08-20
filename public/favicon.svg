@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" fill="none">
+  <ellipse cx="32" cy="58" rx="14" ry="4" fill="#CE1126"/>
+  <rect x="18" y="28" width="28" height="30" rx="2" fill="#CE1126"/>
+  <rect x="20" y="30" width="2" height="26" fill="#FFFFFF" opacity="0.7"/>
+  <rect x="25" y="30" width="2" height="26" fill="#FFFFFF" opacity="0.7"/>
+  <rect x="30" y="30" width="2" height="26" fill="#FFFFFF" opacity="0.7"/>
+  <rect x="35" y="30" width="2" height="26" fill="#FFFFFF" opacity="0.7"/>
+  <rect x="40" y="30" width="2" height="26" fill="#FFFFFF" opacity="0.7"/>
+  <path d="M18 28 Q12 20 14 12 Q18 8 32 8 Q46 8 50 12 Q52 20 46 28 Z" fill="#1EB53A"/>
+  <ellipse cx="32" cy="16" rx="18" ry="12" fill="#FFFFFF" stroke="#CE1126" stroke-width="1.5"/>
+  <path d="M32 8 L33.5 12.5 L38 12.5 L34.5 15.5 L36 20 L32 17 L28 20 L29.5 15.5 L26 12.5 L30.5 12.5 Z" fill="#CE1126"/>
+  <path d="M22 14 L22.6 15.8 L24.5 15.8 L23 17 L23.6 18.8 L22 17.6 L20.4 18.8 L21 17 L19.5 15.8 L21.4 15.8 Z" fill="#CE1126"/>
+  <path d="M42 14 L42.6 15.8 L44.5 15.8 L43 17 L43.6 18.8 L42 17.6 L40.4 18.8 L41 17 L39.5 15.8 L41.4 15.8 Z" fill="#CE1126"/>
+</svg>
