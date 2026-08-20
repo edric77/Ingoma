@@ -31,6 +31,7 @@ export type FlashcardItem = {
   id: string
   front: string
   back: string
+  distractors?: string[]
 }
 
 export type FillBlankItem = {

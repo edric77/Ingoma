@@ -2,6 +2,42 @@ import { useState, useEffect, useMemo } from 'react'
 import type { ActivityItem } from '../../lib/catalog'
 import { cn } from '../../lib/utils'
 
+const DOMAIN_SWAPS: [RegExp, string][] = [
+  [/Personne Responsable des Marchés Publics/gi, 'Direction Nationale du Contrôle des Marchés Publics'],
+  [/Direction Nationale du Contrôle des Marchés Publics/gi, 'Autorité de Régulation des Marchés Publics'],
+  [/Autorité de Régulation des Marchés Publics/gi, 'Personne Responsable des Marchés Publics'],
+  [/contrôle a priori/gi, 'contrôle a posteriori'],
+  [/contrôle a posteriori/gi, 'contrôle a priori'],
+  [/ordonnateur/gi, 'comptable public'],
+  [/comptable public/gi, 'ordonnateur'],
+  [/engage, liquide et ordonnance/gi, 'prend en charge et paie'],
+  [/prend en charge et paie/gi, 'engage, liquide et ordonnance'],
+  [/exécution budgétaire/gi, 'passation des marchés'],
+  [/passation des marchés/gi, 'exécution budgétaire'],
+  [/intérêt personnel/gi, "intérêt de l'autorité contractante"],
+  [/fonction publique/gi, 'activité commerciale'],
+  [/agent désigné/gi, 'organe collégial'],
+  [/autorité contractante/gi, 'soumissionnaire'],
+]
+
+function buildDistractors(correct: string, provided?: string[]): string[] {
+  if (provided && provided.length >= 3) return provided.slice(0, 3)
+  const out: string[] = []
+  for (const [re, repl] of DOMAIN_SWAPS) {
+    if (re.test(correct)) {
+      const variant = correct.replace(re, repl)
+      if (variant !== correct && !out.includes(variant)) out.push(variant)
+    }
+  }
+  if (out.length < 3 && correct.includes('—')) {
+    const [left, right] = correct.split('—').map((s) => s.trim())
+    out.push(`${left} — rôle purement consultatif sans pouvoir de décision.`)
+    out.push(`${left} — compétence exclusive du secteur privé.`)
+    if (right) out.push(`Organe distinct — ${right}`)
+  }
+  return [...new Set(out)].filter((x) => x !== correct).slice(0, 3)
+}
+
 export function FlashcardActivity({
   activity,
   onResult,
@@ -14,28 +50,15 @@ export function FlashcardActivity({
 
   const options = useMemo(() => {
     const correct = activity.back
-    const bank = [
-      "Agent qui paie les dépenses sans contrôle préalable",
-      "Instance qui rédige uniquement les DAO des entreprises",
-      "Procédure de gré à gré sans aucune publicité obligatoire",
-      "Organe chargé uniquement de la paie des agents de l'État",
-      "Registre commercial des sociétés privées",
-      "Taxe communale sans lien avec l'exécution budgétaire",
-      "Décision orale remplaçant tout engagement écrit",
-      "Contrôle exercé uniquement après prescription des délais",
-    ]
-    const distractors = bank.filter((b) => b !== correct)
-    for (let i = distractors.length - 1; i > 0; i--) {
-      const j = Math.floor(Math.random() * (i + 1))
-      ;[distractors[i], distractors[j]] = [distractors[j], distractors[i]]
-    }
-    const pool = [correct, ...distractors.slice(0, 3)]
+    const distractors = buildDistractors(correct, activity.distractors)
+    const pool = [correct, ...distractors]
+    while (pool.length < 4) pool.push(correct + ' (hors cadre légal)')
     for (let i = pool.length - 1; i > 0; i--) {
       const j = Math.floor(Math.random() * (i + 1))
       ;[pool[i], pool[j]] = [pool[j], pool[i]]
     }
-    return pool
-  }, [activity.id, activity.back])
+    return pool.slice(0, 4)
+  }, [activity.id, activity.back, activity.distractors])
 
   useEffect(() => {
     setPhase('prompt')
@@ -48,46 +71,36 @@ export function FlashcardActivity({
     <div className="space-y-4">
       <p className="text-xs font-medium text-forest uppercase tracking-wide">Rappel actif</p>
       <div className="rounded-xl border-2 border-forest/30 bg-paper-light p-5 text-center">
-        <p className="text-xs text-ink-muted mb-2">Quel est le sens de ce terme ?</p>
+        <p className="text-xs text-ink-muted mb-2">Quelle définition est exacte ?</p>
         <p className="font-serif text-xl font-semibold text-ink">{activity.front}</p>
       </div>
-
       {phase === 'prompt' && (
         <div className="space-y-2">
-          {options.map((opt) => (
+          {options.map((opt, i) => (
             <button
-              key={opt}
+              key={opt + i}
               type="button"
               onClick={() => {
                 setPicked(opt)
                 setPhase('answered')
               }}
-              className="w-full text-left rounded-xl border border-line bg-paper-light px-4 py-3 text-sm hover:border-forest/40"
+              className="w-full text-left rounded-xl border border-line bg-paper-light px-4 py-3 text-sm hover:border-forest/40 leading-snug"
             >
+              <span className="text-forest font-medium mr-2">{String.fromCharCode(65 + i)}.</span>
               {opt}
             </button>
           ))}
         </div>
       )}
-
       {phase === 'answered' && (
         <>
-          <div
-            className={cn(
-              'rounded-xl border p-3 text-sm',
-              isCorrect ? 'border-forest/30 bg-forest/5' : 'border-red-flag/30 bg-red-flag/5'
-            )}
-          >
+          <div className={cn('rounded-xl border p-3 text-sm', isCorrect ? 'border-forest/30 bg-forest/5' : 'border-red-flag/30 bg-red-flag/5')}>
             <p className="font-medium mb-1">{isCorrect ? 'Correct' : 'Incorrect'}</p>
             <p className="text-ink-muted">
               <span className="font-medium text-ink">{activity.front}</span> — {activity.back}
             </p>
           </div>
-          <button
-            type="button"
-            onClick={() => onResult(isCorrect)}
-            className="w-full rounded-xl bg-forest text-white font-medium py-3"
-          >
+          <button type="button" onClick={() => onResult(isCorrect)} className="w-full rounded-xl bg-forest text-white font-medium py-3">
             Continuer
           </button>
         </>
