@@ -39,6 +39,17 @@ export default function HomePage() {
         </section>
       )}
 
+      <Link
+        to="/kit-test"
+        className="flex items-center gap-3 rounded-xl border border-line bg-paper-light p-4 hover:border-forest/40 transition-colors"
+      >
+        <span className="text-xl">📱</span>
+        <div className="flex-1">
+          <p className="font-semibold text-ink">Kit test 10 téléphones</p>
+          <p className="text-xs text-ink-muted">Liens testeurs + checklist pilote</p>
+        </div>
+      </Link>
+
       <section>
         <h2 className="font-serif text-lg font-semibold text-ink mb-3">Parcours</h2>
         <div className="space-y-3">
@@ -92,6 +103,17 @@ export default function HomePage() {
           en vigueur (ARMP, DNCMP, Ministère des Finances).
         </p>
       </section>
+
+      <Link
+        to="/defi"
+        className="flex items-center gap-3 rounded-xl border border-forest/30 bg-forest/5 p-4 hover:bg-forest/10 transition-colors"
+      >
+        <span className="text-2xl">⚡</span>
+        <div className="flex-1">
+          <p className="font-semibold text-forest">Défi du jour</p>
+          <p className="text-xs text-ink-muted">Maintenez votre série · +20 pts</p>
+        </div>
+      </Link>
 
       {!progress.phone && (
         <Link
