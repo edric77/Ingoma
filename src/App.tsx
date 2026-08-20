@@ -15,6 +15,7 @@ import TutorPage from './pages/Tutor'
 import CertificatePage from './pages/Certificate'
 import DailyPage from './pages/Daily'
 import KitTestPage from './pages/KitTest'
+import BilanPilotePage from './pages/BilanPilote'
 import { useEffect } from 'react'
 import { touchActivity } from './lib/progress'
 
@@ -34,10 +35,7 @@ function AppShell({ children }: { children: React.ReactNode }) {
             <LogoWithText />
           </NavLink>
           {!hideNav && (
-            <NavLink
-              to="/profil"
-              className="text-sm text-forest font-medium hover:underline"
-            >
+            <NavLink to="/profil" className="text-sm text-forest font-medium hover:underline">
               Profil
             </NavLink>
           )}
@@ -106,6 +104,7 @@ export default function App() {
         <Route path="/certificat/:slug" element={<CertificatePage />} />
         <Route path="/defi" element={<DailyPage />} />
         <Route path="/kit-test" element={<KitTestPage />} />
+        <Route path="/bilan-pilote" element={<BilanPilotePage />} />
       </Routes>
     </AppShell>
   )
