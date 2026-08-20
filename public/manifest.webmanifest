@@ -1,0 +1,18 @@
+{
+  "name": "Ingoma — Microlearning",
+  "short_name": "Ingoma",
+  "description": "Commande publique et comptabilité publique pour les fonctionnaires du Burundi",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#F3EEE4",
+  "theme_color": "#1EB53A",
+  "lang": "fr",
+  "icons": [
+    {
+      "src": "/favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

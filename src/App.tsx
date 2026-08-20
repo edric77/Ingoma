@@ -14,6 +14,7 @@ import ProfilePage from './pages/Profile'
 import TutorPage from './pages/Tutor'
 import CertificatePage from './pages/Certificate'
 import DailyPage from './pages/Daily'
+import KitTestPage from './pages/KitTest'
 import { useEffect } from 'react'
 import { touchActivity } from './lib/progress'
 
@@ -55,6 +56,7 @@ function AppShell({ children }: { children: React.ReactNode }) {
             <NavItem to="/classement" icon={ListOrdered} label="Classement" />
             <NavItem to="/defi" icon={Zap} label="Défi" />
             <NavItem to="/glossaire" icon={Award} label="Glossaire" />
+            <NavItem to="/tuteur" icon={HelpCircle} label="Aide" />
           </div>
         </nav>
       )}
@@ -103,6 +105,7 @@ export default function App() {
         <Route path="/tuteur" element={<TutorPage />} />
         <Route path="/certificat/:slug" element={<CertificatePage />} />
         <Route path="/defi" element={<DailyPage />} />
+        <Route path="/kit-test" element={<KitTestPage />} />
       </Routes>
     </AppShell>
   )
