@@ -1,50 +1,51 @@
 # Ingoma
 
-**Microlearning** pour les fonctionnaires du Burundi — **commande publique** et **comptabilite publique**.
+**Microlearning** pour les fonctionnaires du Burundi — **commande publique** et **comptabilité publique**.
 
-Logo : tambour sacre (karyenda) stylise aux couleurs du drapeau national (rouge `#CE1126`, vert `#1EB53A`, blanc).
+Logo : tambour sacré (karyenda) stylisé aux couleurs du drapeau national (rouge `#CE1126`, vert `#1EB53A`, blanc).
 
 ## Objectif
 
-Former les agents de l'Etat par de courtes lecons, des quiz et des cas pratiques, avec progression mesurable et reconnaissance de la regularite.
+Former les agents de l'État par de courtes leçons, des quiz et des cas pratiques, avec progression mesurable et reconnaissance de la régularité.
 
 ## Parcours
 
 | Parcours | Contenu |
 | --- | --- |
-| Commande publique | Cadre juridique, procedures, acteurs (ARMP, DNCMP, PRMP) |
-| Comptabilite publique | Ordonnateur / comptable, execution, controles, SIGEFI |
+| Commande publique | Cadre juridique, procédures, acteurs (ARMP, DNCMP, PRMP) |
+| Comptabilité publique | Ordonnateur / comptable, exécution, contrôles, SIGEFI |
 
-## Fonctionnalites prevues
+## Fonctionnalités prévues
 
-- Lecons courtes + quiz (seuil 70 %)
+- Leçons courtes + quiz (seuil 70 %)
 - Cas pratiques
 - **Points** et **classements** (national, institution, hebdomadaire)
-- **Series de regularite** (streaks) + badges
-- Inscription par **numero burundais (+257)** + OTP SMS
+- **Séries de régularité** (streaks) + badges
+- Inscription par **numéro burundais (+257)** + OTP SMS
 - Certificats de parcours
 - Tuteur IA (contexte droit burundais)
 
-Voir le detail dans [`docs/PRODUCT.md`](docs/PRODUCT.md).
+Voir le détail dans [`docs/PRODUCT.md`](docs/PRODUCT.md).
 
-## Stack cible
+## Stack
 
-- TanStack Start (React)
-- Tailwind CSS
-- Auth telephone / OTP
-- Base Postgres (Neon / equivalent)
-- Deploiement : Vercel ou `*.grok.me`
+- Vite + React + TypeScript
+- Tailwind CSS (à venir)
+- Auth téléphone / OTP
+- Base Postgres (Neon / équivalent)
+- Déploiement : Vercel
 
-## Deploiement GitHub → Vercel
+## Démarrage local
 
-1. Importer ce repo dans [Vercel](https://vercel.com/new)
-2. Configurer les variables d'environnement (DB, SMS, auth)
-3. Chaque `push` sur `main` declenche un deploiement production
+```bash
+npm install
+npm run dev
+```
 
 ## Statut
 
-Repo initialise. Le code source de l'application App Builder sera ajoute ici (export Build ou synchronisation).
+Code starter Vite + React poussé. Le développement de l'application (parcours, quiz, points, auth) se poursuit ici.
 
 ## Licence
 
-Usage institutionnel — contenu pedagogique, non constitutif d'avis juridique officiel.
+Usage institutionnel — contenu pédagogique, non constitutif d'avis juridique officiel.
