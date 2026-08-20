@@ -1,5 +1,5 @@
 import { Routes, Route, NavLink, useLocation } from 'react-router-dom'
-import { BookOpen, Home, ListOrdered, HelpCircle, Award } from 'lucide-react'
+import { BookOpen, Home, ListOrdered, HelpCircle, Award, Zap } from 'lucide-react'
 import { LogoWithText } from './components/Logo'
 import { cn } from './lib/utils'
 import HomePage from './pages/Home'
@@ -13,6 +13,7 @@ import RankingPage from './pages/Ranking'
 import ProfilePage from './pages/Profile'
 import TutorPage from './pages/Tutor'
 import CertificatePage from './pages/Certificate'
+import DailyPage from './pages/Daily'
 import { useEffect } from 'react'
 import { touchActivity } from './lib/progress'
 
@@ -52,8 +53,8 @@ function AppShell({ children }: { children: React.ReactNode }) {
             <NavItem to="/" icon={Home} label="Accueil" />
             <NavItem to="/parcours/commande-publique" icon={BookOpen} label="Parcours" />
             <NavItem to="/classement" icon={ListOrdered} label="Classement" />
+            <NavItem to="/defi" icon={Zap} label="Défi" />
             <NavItem to="/glossaire" icon={Award} label="Glossaire" />
-            <NavItem to="/tuteur" icon={HelpCircle} label="Aide" />
           </div>
         </nav>
       )}
@@ -101,6 +102,7 @@ export default function App() {
         <Route path="/profil" element={<ProfilePage />} />
         <Route path="/tuteur" element={<TutorPage />} />
         <Route path="/certificat/:slug" element={<CertificatePage />} />
+        <Route path="/defi" element={<DailyPage />} />
       </Routes>
     </AppShell>
   )
