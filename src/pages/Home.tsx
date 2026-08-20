@@ -12,9 +12,7 @@ export default function HomePage() {
     <div className="space-y-8">
       <section>
         <p className="text-sm text-ink-muted">Bonjour,</p>
-        <h1 className="font-serif text-2xl font-semibold text-forest mt-0.5">
-          {name}
-        </h1>
+        <h1 className="font-serif text-2xl font-semibold text-forest mt-0.5">{name}</h1>
         <p className="text-sm text-ink-muted mt-2 leading-relaxed">
           Microlearning pour les fonctionnaires du Burundi — commande publique et comptabilité publique.
         </p>
@@ -39,10 +37,7 @@ export default function HomePage() {
         </section>
       )}
 
-      <Link
-        to="/kit-test"
-        className="flex items-center gap-3 rounded-xl border border-line bg-paper-light p-4 hover:border-forest/40 transition-colors"
-      >
+      <Link to="/kit-test" className="flex items-center gap-3 rounded-xl border border-line bg-paper-light p-4 hover:border-forest/40 transition-colors">
         <span className="text-xl">📱</span>
         <div className="flex-1">
           <p className="font-semibold text-ink">Kit test 10 téléphones</p>
@@ -50,21 +45,23 @@ export default function HomePage() {
         </div>
       </Link>
 
+      <Link to="/bilan-pilote" className="flex items-center gap-3 rounded-xl border border-forest/30 bg-forest/5 p-4 hover:bg-forest/10 transition-colors">
+        <span className="text-xl">📊</span>
+        <div className="flex-1">
+          <p className="font-semibold text-forest">Bilan des 10</p>
+          <p className="text-xs text-ink-muted">Collecter les rapports + export CSV</p>
+        </div>
+      </Link>
+
       <section>
         <h2 className="font-serif text-lg font-semibold text-ink mb-3">Parcours</h2>
         <div className="space-y-3">
           {TRACKS.map((track) => {
-            const done = track.lessons.filter((l) =>
-              progress.completedLessons.includes(l.id)
-            ).length
+            const done = track.lessons.filter((l) => progress.completedLessons.includes(l.id)).length
             const total = track.lessons.length
             const pct = total ? Math.round((done / total) * 100) : 0
             return (
-              <Link
-                key={track.slug}
-                to={`/parcours/${track.slug}`}
-                className="block rounded-xl border border-line bg-paper-light p-4 hover:border-forest/40 transition-colors"
-              >
+              <Link key={track.slug} to={`/parcours/${track.slug}`} className="block rounded-xl border border-line bg-paper-light p-4 hover:border-forest/40 transition-colors">
                 <div className="flex items-start gap-3">
                   <div className="rounded-lg bg-forest/10 p-2.5 shrink-0">
                     <BookOpen className="size-5 text-forest" />
@@ -74,19 +71,12 @@ export default function HomePage() {
                       <h3 className="font-semibold text-ink">{track.title}</h3>
                       <ChevronRight className="size-4 text-ink-muted shrink-0" />
                     </div>
-                    <p className="text-sm text-ink-muted mt-0.5 line-clamp-2">
-                      {track.description}
-                    </p>
+                    <p className="text-sm text-ink-muted mt-0.5 line-clamp-2">{track.description}</p>
                     <div className="mt-3 flex items-center gap-2">
                       <div className="flex-1 h-1.5 rounded-full bg-line overflow-hidden">
-                        <div
-                          className="h-full rounded-full bg-forest transition-all"
-                          style={{ width: `${pct}%` }}
-                        />
+                        <div className="h-full rounded-full bg-forest transition-all" style={{ width: `${pct}%` }} />
                       </div>
-                      <span className="text-xs text-ink-muted tabular-nums">
-                        {done}/{total}
-                      </span>
+                      <span className="text-xs text-ink-muted tabular-nums">{done}/{total}</span>
                     </div>
                   </div>
                 </div>
@@ -104,10 +94,7 @@ export default function HomePage() {
         </p>
       </section>
 
-      <Link
-        to="/defi"
-        className="flex items-center gap-3 rounded-xl border border-forest/30 bg-forest/5 p-4 hover:bg-forest/10 transition-colors"
-      >
+      <Link to="/defi" className="flex items-center gap-3 rounded-xl border border-forest/30 bg-forest/5 p-4 hover:bg-forest/10 transition-colors">
         <span className="text-2xl">⚡</span>
         <div className="flex-1">
           <p className="font-semibold text-forest">Défi du jour</p>
@@ -116,10 +103,7 @@ export default function HomePage() {
       </Link>
 
       {!progress.phone && (
-        <Link
-          to="/login"
-          className="block w-full text-center rounded-xl bg-forest text-white font-medium py-3 hover:bg-forest/90 transition-colors"
-        >
+        <Link to="/login" className="block w-full text-center rounded-xl bg-forest text-white font-medium py-3 hover:bg-forest/90 transition-colors">
           Se connecter avec mon numéro (+257)
         </Link>
       )}
