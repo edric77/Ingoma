@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useState } from 'react'
 import { Link, useSearchParams } from 'react-router-dom'
 import { setProfile, getProgress, touchActivity } from '../lib/progress'
+import { buildReportFromProgress, encodeReportLine } from '../lib/pilotReport'
 import {
   Smartphone,
   Copy,
@@ -94,8 +95,7 @@ export default function KitTestPage() {
           Kit test — 10 téléphones
         </h1>
         <p className="text-sm text-ink-muted mt-2 leading-relaxed">
-          Session de test en parallèle : chaque téléphone reçoit un lien unique (Testeur 01 à
-          10). Pas besoin d’App Store.
+          Session de test en parallèle : chaque téléphone reçoit un lien unique (Testeur 01 à 10).
         </p>
       </div>
 
@@ -114,60 +114,22 @@ export default function KitTestPage() {
 
       <section className="space-y-3">
         <h2 className="font-serif text-lg font-semibold text-ink flex items-center gap-2">
-          <ExternalLink className="size-5 text-forest" />
-          Lien de l’app
-        </h2>
-        <div className="rounded-xl border border-line bg-paper-light p-3 flex items-center gap-2">
-          <code className="flex-1 text-xs break-all text-ink">{baseUrl}</code>
-          <button
-            type="button"
-            onClick={() => copyText(baseUrl, 'base')}
-            className="shrink-0 rounded-lg bg-forest text-white p-2"
-            aria-label="Copier"
-          >
-            {copied === 'base' ? <Check className="size-4" /> : <Copy className="size-4" />}
-          </button>
-        </div>
-        <p className="text-xs text-ink-muted">
-          Envoyez ce lien par WhatsApp / SMS, ou générez un QR code via le bouton QR de cette page
-          une fois déployée.
-        </p>
-      </section>
-
-      <section className="space-y-3">
-        <h2 className="font-serif text-lg font-semibold text-ink flex items-center gap-2">
           <Users className="size-5 text-forest" />
           10 liens testeurs
         </h2>
-        <p className="text-sm text-ink-muted">
-          Un lien par téléphone : le profil se configure automatiquement.
-        </p>
         <ul className="space-y-2">
           {TESTEURS.map((t) => {
             const url = `${baseUrl}/kit-test?t=${t.id}`
             return (
-              <li
-                key={t.id}
-                className="flex items-center gap-2 rounded-xl border border-line bg-paper-light px-3 py-2"
-              >
+              <li key={t.id} className="flex items-center gap-2 rounded-xl border border-line bg-paper-light px-3 py-2">
                 <Smartphone className="size-4 text-forest shrink-0" />
                 <div className="flex-1 min-w-0">
                   <p className="text-sm font-medium text-ink">{t.name}</p>
                   <p className="text-xs text-ink-muted truncate">{url}</p>
                 </div>
-                <button
-                  type="button"
-                  onClick={() => copyText(url, t.id)}
-                  className="shrink-0 rounded-lg border border-line px-2 py-1.5 text-xs font-medium"
-                >
+                <button type="button" onClick={() => copyText(url, t.id)} className="shrink-0 rounded-lg border border-line px-2 py-1.5 text-xs font-medium">
                   {copied === t.id ? 'OK' : 'Copier'}
                 </button>
-                <Link
-                  to={`/kit-test?t=${t.id}`}
-                  className="shrink-0 text-xs text-forest font-medium underline"
-                >
-                  Ouvrir
-                </Link>
               </li>
             )
           })}
@@ -179,9 +141,7 @@ export default function KitTestPage() {
           <ListChecks className="size-5 text-forest" />
           Checklist (ce téléphone)
         </h2>
-        <p className="text-xs text-ink-muted">
-          {checkedCount}/{CHECKLIST.length} étapes · enregistrée sur cet appareil
-        </p>
+        <p className="text-xs text-ink-muted">{checkedCount}/{CHECKLIST.length} étapes</p>
         <ul className="space-y-2">
           {CHECKLIST.map((c) => (
             <li key={c.id}>
@@ -189,18 +149,11 @@ export default function KitTestPage() {
                 type="button"
                 onClick={() => toggleCheck(c.id)}
                 className={cn(
-                  'w-full flex items-start gap-3 rounded-xl border px-3 py-3 text-left text-sm transition-colors',
-                  done[c.id]
-                    ? 'border-forest/40 bg-forest/10 text-forest'
-                    : 'border-line bg-paper-light'
+                  'w-full flex items-start gap-3 rounded-xl border px-3 py-3 text-left text-sm',
+                  done[c.id] ? 'border-forest/40 bg-forest/10 text-forest' : 'border-line bg-paper-light'
                 )}
               >
-                <span
-                  className={cn(
-                    'mt-0.5 size-5 rounded border flex items-center justify-center shrink-0',
-                    done[c.id] ? 'bg-forest border-forest text-white' : 'border-line'
-                  )}
-                >
+                <span className={cn('mt-0.5 size-5 rounded border flex items-center justify-center shrink-0', done[c.id] ? 'bg-forest border-forest text-white' : 'border-line')}>
                   {done[c.id] && <Check className="size-3" />}
                 </span>
                 {c.label}
@@ -208,62 +161,54 @@ export default function KitTestPage() {
             </li>
           ))}
         </ul>
+      </section>
+
+      <section className="rounded-xl border border-forest/40 bg-forest/5 p-4 space-y-3">
+        <h2 className="font-serif text-lg font-semibold text-ink">Mon rapport (pour le bilan)</h2>
+        <p className="text-xs text-ink-muted leading-relaxed">
+          Après la checklist : copiez votre rapport et envoyez-le à l'animateur (WhatsApp).
+          L'animateur colle les 10 lignes dans le Bilan.
+        </p>
         <button
           type="button"
           onClick={() => {
-            setDone({})
-            localStorage.removeItem('ingoma-kit-checklist')
+            const line = encodeReportLine(buildReportFromProgress())
+            copyText(line, 'report')
           }}
-          className="flex items-center gap-1.5 text-xs text-ink-muted hover:text-ink"
+          className="w-full rounded-xl bg-forest text-white font-medium py-3 text-sm"
         >
-          <RotateCcw className="size-3" /> Réinitialiser la checklist
+          {copied === 'report' ? 'Rapport copié ✓' : 'Copier mon rapport'}
         </button>
+        <button
+          type="button"
+          onClick={() => {
+            const line = encodeReportLine(buildReportFromProgress())
+            const text = encodeURIComponent('Rapport Ingoma pilote:\n' + line)
+            window.open('https://wa.me/?text=' + text, '_blank')
+          }}
+          className="w-full rounded-xl border border-forest text-forest font-medium py-3 text-sm"
+        >
+          Envoyer par WhatsApp
+        </button>
+        <Link to="/bilan-pilote" className="block w-full text-center rounded-xl border border-line py-3 text-sm font-medium">
+          Ouvrir le bilan (animateur)
+        </Link>
       </section>
 
       <section className="rounded-xl border border-line bg-paper-light p-4 space-y-3">
         <h2 className="font-serif text-lg font-semibold text-ink flex items-center gap-2">
           <QrCode className="size-5 text-forest" />
-          Protocole animateur (30 min)
+          Protocole animateur
         </h2>
         <ol className="list-decimal list-inside space-y-2 text-sm text-ink leading-relaxed">
-          <li>Déployer l’app (Vercel) et ouvrir cette page sur votre PC.</li>
-          <li>Copier les 10 liens testeurs (ou un QR du lien principal).</li>
-          <li>Donner 1 téléphone = 1 lien Testeur 01…10 (WhatsApp).</li>
-          <li>Chacun suit la checklist (~5–8 min).</li>
-          <li>
-            Noter sur papier : téléphone OK / bloqué / remarque (réseau, OTP, quiz…).
-          </li>
-          <li>
-            Points et progression sont <strong>par téléphone</strong> (pas de serveur
-            partagé en mode pilote).
-          </li>
+          <li>Chaque téléphone fait la checklist.</li>
+          <li>Chaque testeur envoie son rapport (copie ou WhatsApp).</li>
+          <li>Sur le PC : page Bilan → coller les 10 lignes → export CSV.</li>
         </ol>
-        <div className="pt-2 flex flex-wrap gap-2">
-          <Link
-            to="/parcours/commande-publique"
-            className="rounded-xl bg-forest text-white text-sm font-medium px-4 py-2.5"
-          >
-            Aller au parcours
-          </Link>
-          <Link
-            to="/defi"
-            className="rounded-xl border border-forest text-forest text-sm font-medium px-4 py-2.5"
-          >
-            Défi du jour
-          </Link>
-          <Link
-            to="/profil"
-            className="rounded-xl border border-line text-sm font-medium px-4 py-2.5"
-          >
-            Profil
-          </Link>
-        </div>
+        <Link to="/bilan-pilote" className="inline-block rounded-xl bg-forest text-white text-sm font-medium px-4 py-2.5">
+          Aller au bilan des 10
+        </Link>
       </section>
-
-      <p className="text-xs text-ink-muted leading-relaxed">
-        Astuce Android : Chrome → menu → « Ajouter à l’écran d’accueil ». iPhone : Safari →
-        Partager → « Sur l’écran d’accueil ».
-      </p>
     </div>
   )
 }
