@@ -1,13 +1,19 @@
 import { useMemo, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { getDailyChallenge } from '../lib/catalog'
-import { completeDaily, getProgress } from '../lib/progress'
+import { completeDaily, getProgress, ensureProgramStarted } from '../lib/progress'
+import { getProgramDay, getProgramDayNumber, PROGRAM_LENGTH } from '../lib/program-90'
 import { ActivityPlayer } from '../components/activities/ActivityPlayer'
-import { Flame, Zap } from 'lucide-react'
+import { Flame, Zap, CalendarDays } from 'lucide-react'
 
 export default function DailyPage() {
+  const progress = useMemo(() => {
+    ensureProgramStarted()
+    return getProgress()
+  }, [])
+  const dayNum = getProgramDayNumber(progress.programStartDate)
+  const programDay = getProgramDay(dayNum)
   const challenge = useMemo(() => getDailyChallenge(), [])
-  const progress = useMemo(() => getProgress(), [])
   const alreadyDone = progress.completedDailies.includes(challenge.id)
   const [finished, setFinished] = useState(alreadyDone)
   const [success, setSuccess] = useState(alreadyDone)
@@ -21,6 +27,20 @@ export default function DailyPage() {
 
   return (
     <div className="space-y-6">
+      {/* CTA programme 90 j */}
+      <Link
+        to="/programme"
+        className="flex items-center gap-3 rounded-xl border border-forest/30 bg-forest/5 p-4 hover:bg-forest/10"
+      >
+        <CalendarDays className="size-6 text-forest shrink-0" />
+        <div className="flex-1 min-w-0">
+          <p className="font-semibold text-forest">Leçon du jour — programme 3 mois</p>
+          <p className="text-xs text-ink-muted truncate">
+            Jour {programDay.day}/{PROGRAM_LENGTH} · {programDay.title}
+          </p>
+        </div>
+      </Link>
+
       <div className="flex items-start gap-3">
         <div className="rounded-xl bg-forest/10 p-3">
           <Zap className="size-6 text-forest" />
@@ -42,8 +62,8 @@ export default function DailyPage() {
           {success && (
             <p className="text-sm text-forest">+{challenge.points} points · série maintenue</p>
           )}
-          <Link to="/" className="inline-block mt-2 text-sm text-forest font-medium underline">
-            Retour à l&apos;accueil
+          <Link to="/programme" className="inline-block mt-2 text-sm text-forest font-medium underline">
+            Ouvrir la leçon programme du jour
           </Link>
         </div>
       ) : (
@@ -51,8 +71,8 @@ export default function DailyPage() {
       )}
 
       <p className="text-xs text-ink-muted leading-relaxed">
-        Les défis quotidiens renforcent la régularité (streak). Revenez chaque jour pour conserver
-        votre série et débloquer les badges.
+        Le programme 90 jours propose une micro-leçon quotidienne. Le défi ci-dessus renforce la
+        régularité (streak).
       </p>
     </div>
   )

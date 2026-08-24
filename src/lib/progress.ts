@@ -6,6 +6,8 @@ export type ProgressState = {
   completedActivities: string[]
   completedCases: string[]
   completedDailies: string[]
+  completedProgramDays: number[]
+  programStartDate: string | null
   points: number
   streak: number
   lastActiveDate: string | null
@@ -22,6 +24,8 @@ const defaultState: ProgressState = {
   completedActivities: [],
   completedCases: [],
   completedDailies: [],
+  completedProgramDays: [],
+  programStartDate: null,
   points: 0,
   streak: 0,
   lastActiveDate: null,
@@ -79,8 +83,33 @@ function updateStreakAndDaily(state: ProgressState): ProgressState {
     points += 50
   }
   if (streak >= 30 && !badges.includes("agent-assidu")) badges.push("agent-assidu")
+  if (streak >= 90 && !badges.includes("parcours-90j")) badges.push("parcours-90j")
 
   return { ...state, lastActiveDate: t, streak, activityDays, points, badges }
+}
+
+export function ensureProgramStarted(): ProgressState {
+  let state = load()
+  if (!state.programStartDate) {
+    state = { ...state, programStartDate: today() }
+    save(state)
+  }
+  return state
+}
+
+export function completeProgramDay(day: number, activityOk: boolean): ProgressState {
+  let state = load()
+  state = updateStreakAndDaily(state)
+  if (!state.programStartDate) state = { ...state, programStartDate: today() }
+  if (!state.completedProgramDays.includes(day)) {
+    state = {
+      ...state,
+      completedProgramDays: [...state.completedProgramDays, day].sort((a, b) => a - b),
+      points: state.points + (activityOk ? 25 : 10),
+    }
+  }
+  save(state)
+  return state
 }
 
 export function completeLesson(lessonId: string): ProgressState {
@@ -178,4 +207,5 @@ export const BADGE_LABELS: Record<string, string> = {
   "premier-pas": "Premier pas (3 j)",
   "semaine-solide": "Semaine solide (7 j)",
   "agent-assidu": "Agent assidu (30 j)",
+  "parcours-90j": "Parcours 90 jours",
 }
