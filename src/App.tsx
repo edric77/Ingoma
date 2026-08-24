@@ -16,6 +16,7 @@ import CertificatePage from './pages/Certificate'
 import DailyPage from './pages/Daily'
 import KitTestPage from './pages/KitTest'
 import BilanPilotePage from './pages/BilanPilote'
+import ProgramDayPage from './pages/ProgramDay'
 import { useEffect } from 'react'
 import { touchActivity } from './lib/progress'
 
@@ -103,6 +104,7 @@ export default function App() {
         <Route path="/tuteur" element={<TutorPage />} />
         <Route path="/certificat/:slug" element={<CertificatePage />} />
         <Route path="/defi" element={<DailyPage />} />
+        <Route path="/programme" element={<ProgramDayPage />} />
         <Route path="/kit-test" element={<KitTestPage />} />
         <Route path="/bilan-pilote" element={<BilanPilotePage />} />
       </Routes>
