@@ -54,7 +54,7 @@ function AppShell({ children }: { children: React.ReactNode }) {
             <NavItem to="/classement" icon={ListOrdered} label="Classement" />
             <NavItem to="/defi" icon={Zap} label="Défi" />
             <NavItem to="/glossaire" icon={Award} label="Glossaire" />
-            <NavItem to="/tuteur" icon={HelpCircle} label="Aide" />
+            <NavItem to="/tuteur" icon={HelpCircle} label="Assistant" />
           </div>
         </nav>
       )}
