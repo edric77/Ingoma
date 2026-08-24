@@ -4,19 +4,24 @@
 
 Logo : tambour sacré (karyenda) aux couleurs du drapeau (rouge `#CE1126`, vert `#1EB53A`, blanc).
 
-## Contenu v0.2
+## Contenu v0.3
 
 | Parcours | Leçons |
 | --- | --- |
 | Commande publique | **10** (cadre juridique → intégrité) |
 | Comptabilité publique | **10** (principes → responsabilités) |
 
+### Assistant tuteur (gratuit)
+
+Page **Assistant** (`/tuteur`) : réponses pédagogiques à partir des leçons et du glossaire, **sans API payante**.
+
 ### Gamification
 
-- **QCM chronométrés**, **vrai/faux**, **flashcards**
-- **Glisser-déposer**, **textes à trous**, **ordonnancement**, **association**
-- **Jeux de rôle / prise de décision** (scénarios + conséquences)
-- **Défi du jour** (+20 pts) + **séries** (streaks) + badges
+- **QCM chronométrés**, **vrai/faux**, **rappel actif** (flashcards)
+- **Glisser-déposer**, **textes à trous**, **ordonnancement**, **association colorée**
+- **Jeux de rôle / prise de décision**
+- **Défi du jour** + **séries** (streaks) + badges
+- **Kit test 10 téléphones** + **bilan pilote** (CSV)
 
 ### Points
 
@@ -45,7 +50,10 @@ Vite 5 · React 19 · TypeScript · React Router 7 · Tailwind CSS v4 · Lucide
 
 ## Déploiement Vercel
 
-Import du repo GitHub → build `vite build` → output `dist`.
+1. [vercel.com/new](https://vercel.com/new) → importer `edric77/Ingoma`
+2. Framework : Vite · Build : `npm run build` · Output : `dist`
+3. Deploy. Les pushes sur `main` redéploient automatiquement si le projet est lié.
+
 Rewrites SPA dans `vercel.json`.
 
 ## Avertissement
